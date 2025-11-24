@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bro Code</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <p id="p1">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsam dolor a, error voluptatem asperiores ipsum sint et mollitia fugiat nemo cupiditate quibusdam doloribus, eius, quaerat nostrum est nulla exercitationem porro!</p>
+    <p id="p2">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsam dolor a, error voluptatem asperiores ipsum sint et mollitia fugiat nemo cupiditate quibusdam doloribus, eius, quaerat nostrum est nulla exercitationem porro!</p>
+    <p id="p3">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsam dolor a, error voluptatem asperiores ipsum sint et mollitia fugiat nemo cupiditate quibusdam doloribus, eius, quaerat nostrum est nulla exercitationem porro!</p>
+    <p id="p4">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsam dolor a, error voluptatem asperiores ipsum sint et mollitia fugiat nemo cupiditate quibusdam doloribus, eius, quaerat nostrum est nulla exercitationem porro!</p>
+
+</body>
+</html>
+
+/* style.css */
+
+body{
+    background-color: hsl(0, 0%, 11%);
+}
+#p1{
+    color: tomato;
+}
+#p2{
+    color: rgb(102, 222, 255)
+}
+#p3{
+    color: #59ff5f;
+}
+#p4{
+    color: hsl(283, 100%, 64%);
+}

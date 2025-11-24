@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bro Code</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>Hello</h1>
+
+    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus fuga ullam quas corporis vel reprehenderit molestiae nam velit. Ut nulla vitae nobis tenetur voluptatibus reiciendis. Distinctio possimus fuga doloribus reprehenderit.</p>
+
+    <ul id="fruit">
+        <li id="apple">apple</li>
+        <li id="orange">orange</li>
+        <li id="banana">banana</li>
+    </ul>
+    
+</body>
+</html>
+
+/* style.css */
+
+h1::first-letter{
+    font-size: 2em;
+    font-style: italic;
+}
+p::first-line{
+    background-color: hsl(60, 100%, 77%);
+}
+p::selection{
+    color: rgb(89, 255, 71);
+    background-color: hsl(0, 0%, 21%);
+}
+#fruit li::before{
+    
+}
+#apple::after{
+    content: "🍎";
+}
+#orange::after{
+    content: "🍊";
+}
+#banana::after{
+    content: "🍌";
+}
+#fruit li::marker{
+    content: "✔";
+    color: hsl(120, 100%, 64%);
+    font-size: 1.2em;
+}
