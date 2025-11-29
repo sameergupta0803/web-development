@@ -1,0 +1,19 @@
+.pokemon{
+    display:inline-block;
+    text-align: center;
+    width:10%
+}
+img{
+    display: block;
+    width:100%
+}
+@media (max-width:1000px){
+    .pokemon{
+        width:calc(100%/7);
+    }
+}
+@media (max-width:500px){
+    .pokemon{
+        width:calc(100%/5);
+    }
+}
