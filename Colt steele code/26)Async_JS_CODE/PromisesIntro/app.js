@@ -49,11 +49,6 @@ const fakeRequestPromise = (url) => {
 //     })
 
 
-
-
-
-
-
 // fakeRequestPromise('yelp.com/api/coffee/page1')
 //     .then(() => {
 //         console.log("IT WORKED!!!!!! (page1)")
