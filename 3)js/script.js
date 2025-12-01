@@ -315,6 +315,7 @@
 //     {title: 'Notting Hill',score: 77,year: 1999},
 //     {title: 'Alien',score: 90,year: 1979}
 // ]
+// const badMovieTitle=movies.filter((movie)=>movie.score<40).map((movie)=>movie.title);
 // numbers.forEach((num)=>{
 //     console.log(num**2)
 // })
@@ -338,7 +339,27 @@
 // const id=setInterval(()=>{
 //     console.log(`${i++}:Printing every 3 seconds`);
 // },3000)
-
+// function fullName(){
+//     console.log(this);
+//     console.log(`${this.firstName} ${this.lastName}`);
+// }
+// // const fullName=function(){
+// //     console.log(this);
+// //     console.log(`${this.firstName} ${this.lastName}`);
+// // }
+// // const fullName=()=>{
+// //     console.log(this);
+// //     console.log(`${this.firstName} ${this.lastName}`);
+// // }
+// const user = {
+//     email: 'Stacy@gmail.com',
+//     firstName: 'Stacy',
+//     lastName: 'Gonzalez',
+//     full:fullName,
+//     born: 1987,
+//     city: 'Tulsa',
+//     state: 'Oklahoma'
+// }
 //-----------------------------------------------------------------------------------------------------------------------------
 
 //New JS features
@@ -350,28 +371,28 @@
 //     console.log(`${message},${name}`);
 // }
 // greet("Sameer")//name undefined as we passed message="Sameer"
-// function greet(name,message="Hello"){
-//     console.log(`${message},${name}`);
-// }
-// greet("Sameer")//always give default parameters from the right end of the parameters
+function greet(name,message="Hello"){
+    console.log(`${message},${name}`);
+}
+greet("Sameer")//always give default parameters from the right end of the parameters
 
-// const nums=[3,2,5,1,10,61,193,34]
-// const maximum=Math.max(...nums)
-// const cats = ['Blue', 'Scout', 'Rocket'];
-// const dogs = ['Rusty', 'Wyatt'];
-// const allPets=[...cats,...dogs];
-// // const allPets=[...dogs,...cats];//dogs first and then cats
+const nums=[3,2,5,1,10,61,193,34]
+const maximum=Math.max(...nums)
+const cats = ['Blue', 'Scout', 'Rocket'];
+const dogs = ['Rusty', 'Wyatt'];
+const allPets=[...cats,...dogs];
+// const allPets=[...dogs,...cats];//dogs first and then cats
 
-// const feline = { legs: 4, family: 'Felidae' };
-// const canine = { isFurry: true, family: 'Caninae' };
-// const catDog={...feline,...canine};//family is 'Caninae'
+const feline = { legs: 4, family: 'Felidae' };
+const canine = { isFurry: true, family: 'Caninae' };
+const catDog={...feline,...canine};//family is 'Caninae'
 
-// const dataFromForm = {
-//     email: 'blueman@gmail.com',
-//     password: 'tobias123!',
-//     username: 'tfunke'
-// }
-// const newUser={...dataFromForm,id:1,isAdmin:false}
+const dataFromForm = {
+    email: 'blueman@gmail.com',
+    password: 'tobias123!',
+    username: 'tfunke'
+}
+const newUser={...dataFromForm,id:1,isAdmin:false}
 
 // function sum(){
 //     let total=0;
@@ -413,63 +434,28 @@
 //     city: 'Tulsa',
 //     state: 'Oklahoma'
 // }
-// const {firstName,lastName,born,died,bio,...everythingElse}=user;//everythingElse has rest of key:value pairs in an object
+// const {firstName,lastName,born,died,bio,...everythingElse}=user;
+// everythingElse has rest of key:value pairs in an object
 // const {firstName,lastName,born:bornYear,died:deathYear='N/A',bio:biography='N/A',...everythingElse}=user2;
-//here we gave born,death and bio custom names as bornYear,deathYear and biography resp.deathYear and biography has default value 'N/A'
+// here we gave born,death and bio custom names as bornYear,deathYear and biography resp.deathYear and biography has default value 'N/A'
 // function fullname({firstName,lastName,died:deathYear='N/A'}){ 
 //     console.log(`${firstName} ${lastName} died in ${deathYear}`);
 // }
-//Destructed the object within function parameter with died having name as deathYear with default value 'N/A'
+// Destructed the object within function parameter with died having name as deathYear with default value 'N/A'
 // const movies = [
-//     {
-//         title: 'Amadeus',
-//         score: 99,
-//         year: 1984
-//     },
-//     {
-//         title: 'Sharknado',
-//         score: 35,
-//         year: 2013
-//     },
-//     {
-//         title: '13 Going On 30',
-//         score: 70,
-//         year: 2004
-//     },
-//     {
-//         title: 'Stand By Me',
-//         score: 85,
-//         year: 1986
-//     },
-//     {
-//         title: 'Waterworld',
-//         score: 62,
-//         year: 1995
-//     },
-//     {
-//         title: 'Jingle All The Way',
-//         score: 71,
-//         year: 1996
-//     },
-//     {
-//         title: 'Parasite',
-//         score: 95,
-//         year: 2019
-//     },
-//     {
-//         title: 'Notting Hill',
-//         score: 77,
-//         year: 1999
-//     },
-//     {
-//         title: 'Alien',
-//         score: 90,
-//         year: 1979
-//     }
+//     {title: 'Amadeus',score: 99,year: 1984},
+//     {title: 'Sharknado',score: 35,year: 2013},
+//     {title: '13 Going On 30',score: 70,year: 2004},
+//     {title: 'Stand By Me',score: 85,year: 1986},
+//     {title: 'Waterworld',score: 62,year: 1995},
+//     {title: 'Jingle All The Way',score: 71,year: 1996},
+//     {title: 'Parasite',score: 95,year: 2019},
+//     {title: 'Notting Hill',score: 77,year: 1999},
+//     {title: 'Alien',score: 90,year: 1979}
 // ]
 // const goodMoviesTitles=movies.filter(({score})=>score>80).map(({title})=>title);
 //used parameter destructuring within arrow functions
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-//DOM
+//DOM onwards in colt steele mine.js files

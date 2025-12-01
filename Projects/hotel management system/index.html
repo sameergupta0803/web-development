@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Manager Pro</title>
+    <!-- FontAwesome for Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside id="sidebar">
+            <div class="sidebar-header">
+                <div class="brand"><i class="fa-solid fa-hotel"></i> LuxeStay</div>
+                <div class="brand-subtitle">Management System</div>
+            </div>
+            
+            <nav>
+                <a href="#" onclick="showSection('dashboard')" id="nav-dashboard" class="nav-item active">
+                    <i class="fa-solid fa-chart-pie"></i> Dashboard
+                </a>
+                <a href="#" onclick="showSection('rooms')" id="nav-rooms" class="nav-item">
+                    <i class="fa-solid fa-bed"></i> Rooms
+                </a>
+                <a href="#" onclick="showSection('bookings')" id="nav-bookings" class="nav-item">
+                    <i class="fa-solid fa-address-book"></i> Bookings
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                &copy; 2024 LuxeStay Systems
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main>
+            <!-- Mobile Header -->
+            <header class="mobile-header">
+                <div class="brand" style="font-size: 1.2rem; margin: 0;"><i class="fa-solid fa-hotel"></i> LuxeStay</div>
+                <button onclick="toggleSidebar()" class="toggle-btn">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </header>
+
+            <div id="main-content">
+                
+                <!-- SECTION: Dashboard -->
+                <div id="dashboard" class="section active">
+                    <h2>Dashboard Overview</h2>
+                    
+                    <!-- Stats Cards -->
+                    <div class="stats-grid">
+                        <div class="stat-card blue">
+                            <div class="stat-info">
+                                <p>Total Rooms</p>
+                                <h3 id="stat-total">0</h3>
+                            </div>
+                            <div class="stat-icon">
+                                <i class="fa-solid fa-building fa-lg"></i>
+                            </div>
+                        </div>
+
+                        <div class="stat-card green">
+                            <div class="stat-info">
+                                <p>Available</p>
+                                <h3 id="stat-available">0</h3>
+                            </div>
+                            <div class="stat-icon">
+                                <i class="fa-solid fa-check fa-lg"></i>
+                            </div>
+                        </div>
+
+                        <div class="stat-card red">
+                            <div class="stat-info">
+                                <p>Booked</p>
+                                <h3 id="stat-booked">0</h3>
+                            </div>
+                            <div class="stat-icon">
+                                <i class="fa-solid fa-user-check fa-lg"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="card">
+                        <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">Recent Bookings</h3>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Guest Name</th>
+                                        <th>Room Type</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dashboard-table-body">
+                                    <!-- Populated by JS -->
+                                </tbody>
+                            </table>
+                            <div id="empty-dashboard-msg" class="empty-state" style="display: none;">No recent bookings</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION: Rooms -->
+                <div id="rooms" class="section">
+                    <div class="rooms-header">
+                        <h2>Room Management</h2>
+                        <div class="legend">
+                             <div class="legend-item"><div class="dot green"></div> Available</div>
+                             <div class="legend-item"><div class="dot red"></div> Booked</div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid-container" id="rooms-grid">
+                        <!-- Room Cards Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- SECTION: Bookings -->
+                <div id="bookings" class="section">
+                    <h2>All Reservations</h2>
+                    
+                    <div class="card" style="padding: 0;">
+                        <div class="table-container">
+                            <table>
+                                <thead style="background-color: #f8fafc;">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Guest</th>
+                                        <th>Room</th>
+                                        <th>Check-in</th>
+                                        <th>Check-out</th>
+                                        <th>Status</th>
+                                        <th style="text-align: center;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="bookings-table-body">
+                                    <!-- JS Populated -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="no-bookings-msg" class="empty-state">
+                            <i class="fa-solid fa-clipboard-list"></i>
+                            <p>No active bookings found.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal: Booking Form -->
+    <div id="booking-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 style="font-size: 1.1rem;"><i class="fa-solid fa-pen-to-square"></i> Book Room <span id="modal-room-number"></span></h3>
+                <button onclick="closeModal()" class="close-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <form id="booking-form" class="modal-body">
+                <input type="hidden" id="booking-room-id">
+                
+                <div class="form-group">
+                    <label>Guest Name</label>
+                    <input type="text" id="guest-name" required class="form-control" placeholder="John Doe">
+                </div>
+
+                <div class="form-row form-group">
+                    <div>
+                        <label>Check In</label>
+                        <input type="date" id="check-in" required class="form-control">
+                    </div>
+                    <div>
+                        <label>Check Out</label>
+                        <input type="date" id="check-out" required class="form-control">
+                    </div>
+                </div>
+
+                <div class="price-summary">
+                    <span>Total Price:</span>
+                    <span style="font-weight: bold; font-size: 1.2rem;" id="modal-price">$0</span>
+                </div>
+
+                <div>
+                    <button type="submit" class="btn-submit">
+                        Confirm Booking
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <i class="fa-solid fa-circle-check" style="color: #4ade80;"></i>
+        <span id="toast-msg">Operation Successful</span>
+    </div>
+    <script src="app.js"></script>
+   
+</body>
+</html>
