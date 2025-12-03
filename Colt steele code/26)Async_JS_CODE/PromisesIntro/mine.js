@@ -1,22 +1,47 @@
 // THE CALLBACK VERSION
-const fakeRequestCallback = (url, success, failure) => {
+// const fakeRequestCallback = (url, success, failure) => {
+//     const delay = Math.floor(Math.random() * 4500) + 500;
+//     setTimeout(() => {
+//         if (delay > 4000) {
+//             failure('Connection Timeout :(')
+//         } else {
+//             success(`Here is your fake data from ${url}`)
+//         }
+//     }, delay)
+// }
+const fakeRequestCallback = function (url, success, failure) {
     const delay = Math.floor(Math.random() * 4500) + 500;
     setTimeout(() => {
         if (delay > 4000) {
-            failure('Connection Timeout :(')
-        } else {
+            failure("Connection Timeout");
+        }
+        else {
             success(`Here is your fake data from ${url}`)
         }
     }, delay)
+
 }
 // THE PROMISE VERSION 
-const fakeRequestPromise = (url) => {
+// const fakeRequestPromise = (url) => {
+//     return new Promise((resolve, reject) => {
+//         const delay = Math.floor(Math.random() * (4500)) + 500;
+//         setTimeout(() => {
+//             if (delay > 4000) {
+//                 reject('Connection Timeout :(')
+//             } else {
+//                 resolve(`Here is your fake data from ${url}`)
+//             }
+//         }, delay)
+//     })
+// }
+const fakeRequestPromise = function(url){
     return new Promise((resolve, reject) => {
-        const delay = Math.floor(Math.random() * (4500)) + 500;
+        const delay = Math.floor(Math.random() * 4500) + 500;
         setTimeout(() => {
             if (delay > 4000) {
-                reject('Connection Timeout :(')
-            } else {
+                reject("Connection Timeout");
+            }
+            else {
                 resolve(`Here is your fake data from ${url}`)
             }
         }, delay)
@@ -50,10 +75,63 @@ const fakeRequestPromise = (url) => {
 //     console.log("Failure on page 1!");
 //     console.log(err);
 // })
-fakeRequestPromise('books.com/page1').then((res)=>{
-    console.log("Success on page 1");
-    console.log(res)
-}).catch((err)=>{
-    console.log("Failure on page 1");
-    console.log(err)
-})
+// fakeRequestPromise('books.com/page1').
+//     then((res) => {
+//         console.log("Success on page 1");
+//         console.log(res)
+//         fakeRequestPromise('books.com/page2')
+//             .then((res) => {
+//                 console.log("Success on page 2");
+//                 console.log(res)
+//                 fakeRequestPromise('books.com/page3')
+//                     .then((res) => {
+//                         console.log("Success on page 3");
+//                         console.log(res)
+//                         fakeRequestPromise('books.com/page4')
+//                             .then((res) => {
+//                                 console.log("Success on page 4");
+//                                 console.log(res)
+//                             })
+//                             .catch((err) => {
+//                                 console.log("Failure on page 4");
+//                                 console.log(err)
+//                             })
+//                     })
+//                     .catch((err) => {
+//                         console.log("Failure on page 3");
+//                         console.log(err)
+//                     })
+//             })
+//             .catch((err) => {
+//                 console.log("Failure on page 2");
+//                 console.log(err)
+//             })
+//     })
+//     .catch((err) => {
+//         console.log("Failure on page 1");
+//         console.log(err)
+//     })
+fakeRequestPromise('books.com/page1')
+    .then((res) => {
+        console.log("Success on page 1");
+        console.log(res)
+        return fakeRequestPromise('books.com/page2')
+    })
+    .then((res) => {
+        console.log("Success on page 2");
+        console.log(res)
+        return fakeRequestPromise('books.com/page3')
+    })
+    .then((res) => {
+        console.log("Success on page 3");
+        console.log(res)
+        return fakeRequestPromise('books.com/page4')
+    })
+    .then((res) => {
+        console.log("Success on page 4");
+        console.log(res)
+    })
+    .catch((err) => {
+        console.log("Failure");
+        console.log(err)
+    })
