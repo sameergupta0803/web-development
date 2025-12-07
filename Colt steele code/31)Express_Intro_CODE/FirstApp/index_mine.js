@@ -21,6 +21,29 @@ app.post('/dogs',(req,res)=>{
     res.send("This is a post request to /dogs page!")
 })
 //.post() handles the post requests make to the server.
+app.get('/r/:subreddit',(req,res)=>{
+    const {subreddit}=req.params;//consists of key:value pair of parameter passed
+    res.send(`<h1>You are viewing the subreddit ${subreddit}</h1>`);
+})
+app.get("/r/:subreddit/:postId",(req,res)=>{
+    const {subreddit,postId}=req.params;
+    res.send(`<h1>You are viewing post with ID ${postId} on subreddit ${subreddit}</h1>`)
+})
+app.get("/search",(req,res)=>{
+    const query=req.query;//stores key:value pairs of query passed.{name:'Sameer',gender:'M'} on /search?name=Sameer&gender=M
+    const keyValues=Object.entries(query);//gets key:value arrays from object
+    if(!keyValues.length){
+        res.send("<h1>No query found</h1>")
+    }
+    else{
+        
+        let responseString=``;
+        for(let [key,value] of keyValues){
+            responseString+=`<h1>${key}:${value}</h1>`
+        }
+        res.send(responseString)//sending the response string,only gets send once
+    }
+})
 app.get('*',(req,res)=>{
     res.send("Oops!I don't know that page!!")
 })
