@@ -60,40 +60,40 @@ app.post('/hotels', async (req, res) => {
 app.get('/about', (req, res) => {
     res.render('about');
 });
+// CONTACT ROUTE
+app.get('/contact', (req, res) => {
+    res.render('contact');
+});
 // SEED ROUTE (Run this once to populate DB)
 app.get('/seed', async (req, res) => {
     try {
-        // 1. Delete all existing hotels first (optional, keeps it clean)
         await Hotel.deleteMany({});
 
-        // 2. Define the default hotels
         const seeds = [
-            {
-                name: "Ocean View Resort",
-                image: "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60",
-                description: "A beautiful resort right on the beach with amazing sunset views.",
-                price: 250
-            },
-            {
-                name: "Mountain High Cabin",
-                image: "https://images.unsplash.com/photo-1445019980597-93fa8acb246c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60",
-                description: "Escape to the mountains in this cozy wooden cabin.",
-                price: 120
-            },
-            {
-                name: "Urban Luxury Hotel",
-                image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60",
-                description: "Experience the city life in style with our 5-star amenities.",
-                price: 400
-            }
+            { name: "Ocean View Resort", price: 250, description: "Stunning sunset views.", image: "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=800&q=80" },
+            { name: "Mountain Cabin", price: 120, description: "Cozy wood cabin.", image: "https://images.unsplash.com/photo-1445019980597-93fa8acb246c?w=800&q=80" },
+            { name: "Urban Luxury", price: 400, description: "City center style.", image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80" },
+            { name: "Desert Oasis", price: 180, description: "A mirage come true.", image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800&q=80" },
+            { name: "Lakeside Lodge", price: 200, description: "Serene waterside living.", image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&q=80" },
+            { name: "Forest Retreat", price: 150, description: "Hidden in the pines.", image: "https://images.unsplash.com/photo-1416339306562-f3d12fefd36f?w=800&q=80" },
+            { name: "Snowy Peaks Hotel", price: 300, description: "Ski-in, ski-out access.", image: "https://images.unsplash.com/photo-1517840901100-8179e982acb7?w=800&q=80" },
+            { name: "Tropical Paradise", price: 350, description: "Island vibes only.", image: "https://images.unsplash.com/photo-1571896349842-6e53ce41e869?w=800&q=80" },
+            { name: "Historic Manor", price: 220, description: "Old world charm.", image: "https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800&q=80" },
+            { name: "Modern Loft Stay", price: 190, description: "Minimalist design.", image: "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800&q=80" },
+            { name: "Countryside Inn", price: 110, description: "Quiet and peaceful.", image: "https://images.unsplash.com/photo-1562790351-d273a961e05b?w=800&q=80" },
+            { name: "Cliffside Villa", price: 500, description: "Living on the edge.", image: "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=800&q=80" }
         ];
 
-        // 3. Insert them into the DB
         await Hotel.insertMany(seeds);
-        res.send("Database seeded! <a href='/hotels'>Click here to view hotels</a>");
-
+        res.send(`
+            <div style="text-align:center; padding-top: 50px; font-family: sans-serif;">
+                <h1>✅ Database Seeded!</h1>
+                <p>Added 12 fresh hotels.</p>
+                <a href="/hotels" style="background: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Go to Website</a>
+            </div>
+        `);
     } catch (err) {
-        res.send("Error seeding database: " + err.message);
+        res.send("Error: " + err);
     }
 });
 app.listen(3000, () => {
