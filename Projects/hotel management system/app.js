@@ -1,281 +1,101 @@
-// --- DATA & STATE ---
-const roomTypes = {
-    'single': { label: 'Single Bed', price: 100, icon: 'fa-user' },
-    'double': { label: 'Double Bed', price: 180, icon: 'fa-user-group' },
-    'suite': { label: 'Luxury Suite', price: 350, icon: 'fa-gem' }
-};
-
-// Initialize Rooms
-let rooms = [
-    { id: 101, type: 'single', status: 'available' },
-    { id: 102, type: 'single', status: 'booked' },
-    { id: 103, type: 'double', status: 'available' },
-    { id: 104, type: 'double', status: 'available' },
-    { id: 201, type: 'single', status: 'cleaning' },
-    { id: 202, type: 'suite', status: 'available' },
-    { id: 203, type: 'suite', status: 'booked' },
-    { id: 301, type: 'double', status: 'available' }
-];
-
-// Initialize Bookings (Mock Data)
-let bookings = [
-    { id: 1, roomId: 102, guest: "Alice Smith", checkIn: "2023-11-01", checkOut: "2023-11-05", status: "Active" },
-    { id: 2, roomId: 203, guest: "Robert Downey", checkIn: "2023-10-28", checkOut: "2023-11-02", status: "Active" }
-];
-
-// --- CORE FUNCTIONS ---
-
-function init() {
-    renderDashboard();
-    renderRooms();
-    renderBookings();
-    
-    // Set default date inputs to today/tomorrow
-    const today = new Date();
-    const tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    document.getElementById('check-in').valueAsDate = today;
-    document.getElementById('check-out').valueAsDate = tomorrow;
-}
-
-// Navigation Switcher
-function showSection(sectionId) {
-    // Update UI content
-    document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
-    document.getElementById(sectionId).classList.add('active');
-
-    // Update Nav State
-    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-    const activeNav = document.getElementById('nav-' + sectionId);
-    if(activeNav) activeNav.classList.add('active');
-
-    // Close mobile sidebar if open
-    const sidebar = document.getElementById('sidebar');
-    if (sidebar.classList.contains('open') && window.innerWidth < 768) {
-        sidebar.classList.remove('open');
+//SETUP & CONFIGURATION
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://127.0.0.1:27017/hotel_app', {
+})
+    .then(() => console.log('Connected to MongoDB!'))
+    .catch(err => console.log('DB Connection Error:', err));
+// App Config
+app.use(bodyParser.urlencoded({ extended: true }));
+app.set('view engine', 'ejs');
+// Setup the Hotel Schema
+const hotelSchema = new mongoose.Schema({
+    name: String,
+    image: String,
+    description: String,
+    price: Number
+});
+// Create the Model
+const Hotel = mongoose.model('Hotel', hotelSchema);
+// ROOT ROUTE
+app.get('/', (req, res) => {
+    res.render('landing');//redirects to hotels
+});
+// INDEX ROUTE - Show all hotels
+app.get('/hotels', async (req, res) => {
+    try {
+        // Get all hotels from DB
+        const allHotels = await Hotel.find({});
+        res.render('index', { hotels: allHotels });
+    } catch (err) {
+        console.log(err);
     }
-}
-
-function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    sidebar.classList.toggle('open');
-}
-
-// Render Dashboard Stats
-function renderDashboard() {
-    const total = rooms.length;
-    const available = rooms.filter(r => r.status === 'available').length;
-    const booked = rooms.filter(r => r.status === 'booked').length;
-
-    document.getElementById('stat-total').innerText = total;
-    document.getElementById('stat-available').innerText = available;
-    document.getElementById('stat-booked').innerText = booked;
-
-    // Render Recent Table
-    const recentBody = document.getElementById('dashboard-table-body');
-    recentBody.innerHTML = '';
-    
-    if(bookings.length === 0) {
-        document.getElementById('empty-dashboard-msg').style.display = 'block';
-    } else {
-        document.getElementById('empty-dashboard-msg').style.display = 'none';
-        // Show last 3 bookings
-        bookings.slice(-3).reverse().forEach(b => {
-            const room = rooms.find(r => r.id == b.roomId);
-            const row = `
-                <tr>
-                    <td><strong>${b.guest}</strong></td>
-                    <td style="color: #64748b;">${roomTypes[room.type].label} (#${b.roomId})</td>
-                    <td style="color: #64748b;">${b.checkIn}</td>
-                    <td><span class="badge active">Active</span></td>
-                </tr>
-            `;
-            recentBody.innerHTML += row;
-        });
-    }
-}
-
-// Render Room Cards
-function renderRooms() {
-    const container = document.getElementById('rooms-grid');
-    container.innerHTML = '';
-
-    rooms.forEach(room => {
-        const info = roomTypes[room.type];
-        let statusClass = '';
-        let statusLabel = '';
-        let btnAction = '';
-
-        if (room.status === 'available') {
-            statusClass = 'available';
-            statusLabel = 'Available';
-            btnAction = `<button onclick="openBookingModal(${room.id})" class="btn btn-primary">Book Now</button>`;
-        } else if (room.status === 'booked') {
-            statusClass = 'booked';
-            statusLabel = 'Booked';
-            btnAction = `<button disabled class="btn btn-disabled">Occupied</button>`;
-        } else {
-            statusClass = 'cleaning';
-            statusLabel = 'Cleaning';
-            btnAction = `<button onclick="markAvailable(${room.id})" class="btn btn-outline">Mark Ready</button>`;
-        }
-
-        const card = `
-            <div class="card room-card">
-                <div class="room-header">
-                    <div class="room-icon">
-                        <i class="fa-solid ${info.icon}"></i>
-                    </div>
-                    <span class="badge ${statusClass}">${statusLabel}</span>
-                </div>
-                
-                <div class="room-title">Room ${room.id}</div>
-                <div class="room-type">${info.label}</div>
-                
-                <div class="price-tag">
-                    <span class="price-amount">$${info.price}</span>
-                    <span class="price-period">/ night</span>
-                </div>
-
-                ${btnAction}
-            </div>
-        `;
-        container.innerHTML += card;
-    });
-}
-
-// Render Bookings Table
-function renderBookings() {
-    const tbody = document.getElementById('bookings-table-body');
-    tbody.innerHTML = '';
-
-    if (bookings.length === 0) {
-        document.getElementById('no-bookings-msg').style.display = 'block';
-        return;
-    }
-    document.getElementById('no-bookings-msg').style.display = 'none';
-
-    bookings.forEach(b => {
-        const room = rooms.find(r => r.id == b.roomId);
-        const row = `
-            <tr>
-                <td style="font-weight: bold; color: var(--secondary);">#${b.id}</td>
-                <td>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <div style="width: 30px; height: 30px; background: #e2e8f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #64748b; font-size: 0.8rem;">
-                            ${b.guest.charAt(0)}
-                        </div>
-                        <span style="font-weight: 500;">${b.guest}</span>
-                    </div>
-                </td>
-                <td style="color: #64748b;">Room ${b.roomId}</td>
-                <td style="color: #64748b;">${b.checkIn}</td>
-                <td style="color: #64748b;">${b.checkOut}</td>
-                <td><span class="badge active">Active</span></td>
-                <td style="text-align: center;">
-                    <button onclick="checkOut(${b.id})" class="btn-icon" title="Check Out">
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                    </button>
-                </td>
-            </tr>
-        `;
-        tbody.innerHTML += row;
-    });
-}
-
-// --- INTERACTION LOGIC ---
-
-function markAvailable(roomId) {
-    const room = rooms.find(r => r.id === roomId);
-    if (room) {
-        room.status = 'available';
-        showToast(`Room ${roomId} is now ready.`);
-        renderRooms();
-        renderDashboard();
-    }
-}
-
-function openBookingModal(roomId) {
-    const room = rooms.find(r => r.id === roomId);
-    const info = roomTypes[room.type];
-    
-    document.getElementById('booking-room-id').value = roomId;
-    document.getElementById('modal-room-number').innerText = roomId;
-    document.getElementById('modal-price').innerText = `$${info.price}`;
-    
-    document.getElementById('booking-modal').classList.add('open');
-}
-
-function closeModal() {
-    document.getElementById('booking-modal').classList.remove('open');
-    document.getElementById('booking-form').reset();
-}
-
-// Handle Form Submission
-document.getElementById('booking-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const roomId = parseInt(document.getElementById('booking-room-id').value);
-    const guest = document.getElementById('guest-name').value;
-    const checkIn = document.getElementById('check-in').value;
-    const checkOut = document.getElementById('check-out').value;
-
-    // 1. Add to bookings
-    const newBooking = {
-        id: bookings.length > 0 ? bookings[bookings.length-1].id + 1 : 1,
-        roomId: roomId,
-        guest: guest,
-        checkIn: checkIn,
-        checkOut: checkOut,
-        status: "Active"
-    };
-    bookings.push(newBooking);
-
-    // 2. Update Room Status
-    const room = rooms.find(r => r.id === roomId);
-    room.status = 'booked';
-
-    // 3. Refresh UI
-    renderRooms();
-    renderBookings();
-    renderDashboard();
-    closeModal();
-    showToast(`Room ${roomId} booked successfully!`);
 });
 
-function checkOut(bookingId) {
-    if(confirm('Check out this guest and mark room as cleaning?')) {
-        // Find booking
-        const bookingIndex = bookings.findIndex(b => b.id === bookingId);
-        if (bookingIndex > -1) {
-            const roomId = bookings[bookingIndex].roomId;
-            
-            // Remove booking
-            bookings.splice(bookingIndex, 1);
-            
-            // Set room to cleaning
-            const room = rooms.find(r => r.id === roomId);
-            if(room) room.status = 'cleaning';
+// NEW ROUTE - Show form to create new hotel
+app.get('/hotels/new', (req, res) => {
+    res.render('new');
+});
 
-            renderRooms();
-            renderBookings();
-            renderDashboard();
-            showToast('Guest checked out.');
-        }
+// CREATE ROUTE - Add new hotel to DB
+app.post('/hotels', async (req, res) => {
+    // Get data from form and add to hotels array
+    const name = req.body.name;
+    const image = req.body.image;
+    const desc = req.body.description;
+    const price = req.body.price;
+    const newHotel = { name: name, image: image, description: desc, price: price };
+    try {
+        // Create a new hotel and save to DB
+        await Hotel.create(newHotel);
+        // Redirect back to hotels page
+        res.redirect('/hotels');
+    } catch (err) {
+        console.log(err);
     }
-}
+});
+// ABOUT ROUTE
+app.get('/about', (req, res) => {
+    res.render('about');
+});
+// SEED ROUTE (Run this once to populate DB)
+app.get('/seed', async (req, res) => {
+    try {
+        // 1. Delete all existing hotels first (optional, keeps it clean)
+        await Hotel.deleteMany({});
 
-// Utility: Toast Notification
-function showToast(message) {
-    const toast = document.getElementById('toast');
-    const msg = document.getElementById('toast-msg');
-    msg.innerText = message;
-    
-    toast.classList.add('show');
-    setTimeout(() => {
-        toast.classList.remove('show');
-    }, 3000);
-}
+        // 2. Define the default hotels
+        const seeds = [
+            {
+                name: "Ocean View Resort",
+                image: "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60",
+                description: "A beautiful resort right on the beach with amazing sunset views.",
+                price: 250
+            },
+            {
+                name: "Mountain High Cabin",
+                image: "https://images.unsplash.com/photo-1445019980597-93fa8acb246c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60",
+                description: "Escape to the mountains in this cozy wooden cabin.",
+                price: 120
+            },
+            {
+                name: "Urban Luxury Hotel",
+                image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60",
+                description: "Experience the city life in style with our 5-star amenities.",
+                price: 400
+            }
+        ];
 
-// Start App
-init();
+        // 3. Insert them into the DB
+        await Hotel.insertMany(seeds);
+        res.send("Database seeded! <a href='/hotels'>Click here to view hotels</a>");
+
+    } catch (err) {
+        res.send("Error seeding database: " + err.message);
+    }
+});
+app.listen(3000, () => {
+    console.log('The Hotel Server has started on port 3000!');
+});

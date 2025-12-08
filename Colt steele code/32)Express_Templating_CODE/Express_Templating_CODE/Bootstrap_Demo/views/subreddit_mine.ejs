@@ -1,0 +1,29 @@
+<%- include('partials/head_mine')%>
+<%- include('partials/navbar_mine')%>
+<div class="container">
+    <h1>
+        <%=name%>
+    </h1>
+    <p>
+        <%=description%>
+    </p>
+    <span>Subscribers:<%=subscribers%> </span>
+    <hr>
+    <div>
+        <%for(let post of posts){%>
+            <article>
+                <p>
+                    <%=post.title%>-<b>
+                            <%=post.author%>
+                        </b>
+                </p>
+                <% if(post.img){%>
+                    <div>
+                        <img src="<%=post.img%>" alt="">
+                    </div>
+                    <%}%>
+            </article>
+            <%}%>
+    </div>
+</div>
+<%- include('partials/footer_mine')%>
