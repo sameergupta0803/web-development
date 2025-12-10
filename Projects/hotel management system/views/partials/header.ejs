@@ -11,18 +11,23 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            background-color: #f8f9fa; /* Light grey background */
+            background-color: #f8f9fa;
         }
         main {
-            flex: 1; /* Pushes footer down */
+            flex: 1;
         }
         .navbar-brand {
-            font-weight: bold;
+            font-weight: 800; /* Made slightly bolder */
+            font-size: 1.5rem;
             letter-spacing: 1px;
         }
+        .nav-link {
+            font-weight: 500; /* Makes links pop a bit more */
+            margin: 0 5px;     /* Adds breathing room between links */
+        }
         .card-img-top {
-            height: 200px; /* Fixed height for images */
-            object-fit: cover; /* Prevents stretching */
+            height: 200px;
+            object-fit: cover;
         }
     </style>
 </head>
@@ -30,11 +35,14 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <div class="container">
             <a class="navbar-brand" href="/hotels">🏨 HotelManager</a>
+            
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
+            
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
+                
+                <ul class="navbar-nav mx-auto text-center"> 
                     <li class="nav-item">
                         <a class="nav-link" href="/hotels">Home</a>
                     </li>
@@ -42,12 +50,32 @@
                         <a class="nav-link" href="/about">About Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/contact">Contact</a> </li>
-                </ul>
-                <ul class="navbar-nav ms-auto">
-                     <li class="nav-item">
-                        <a class="nav-link btn btn-primary text-white px-3" href="/hotels/new">Add Hotel</a>
+                        <a class="nav-link" href="/contact">Contact</a>
                     </li>
+                    <% if(currentUser){ %>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/my-hotels">My Hotels</a>
+                        </li>
+                    <% } %>
+                </ul>
+
+                <ul class="navbar-nav ms-lg-auto text-center align-items-center">
+                    <% if(!currentUser){ %>
+                        <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+                        <li class="nav-item">
+                            <a class="btn btn-outline-light btn-sm ms-2" href="/register">Sign Up</a>
+                        </li>
+                    <% } else { %>
+                        <li class="nav-item">
+                            <span class="navbar-text me-2">Hello, <%= currentUser.username %></span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout">Logout</a>
+                        </li>
+                        <li class="nav-item ms-lg-2">
+                            <a class="btn btn-primary btn-sm px-3" href="/hotels/new">+ Add Hotel</a>
+                        </li>
+                    <% } %>
                 </ul>
             </div>
         </div>
