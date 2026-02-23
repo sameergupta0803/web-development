@@ -21,7 +21,7 @@ const productSchema = new mongoose.Schema({
         type: Boolean,
         default: false//default value for the field
     },
-    categories: [String],
+    categories: [String],//list of strings
     qty: {
         online: {
             type: Number,

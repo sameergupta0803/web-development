@@ -10,7 +10,7 @@ const port = 3000
 app.get('/',(req,res)=>{
     res.send("You are on homepage!")
 })
-//.get() handles the get() requests made to the server.'/' indicates the homepage.We can givrate response to seperate pages using get()
+//.get() handles the get() requests made to the server.'/' indicates the homepage.We can give response to seperate pages using get()
 app.get('/cats',(req,res)=>{
     res.send("You are on cats page!")
 })

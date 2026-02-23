@@ -19,7 +19,6 @@ const delayedColorChange = (color, delay) => {
         }, delay)
     })
 }
-
 // delayedColorChange('red', 1000)
 //     .then(() => delayedColorChange('orange', 1000))
 //     .then(() => delayedColorChange('yellow', 1000))
@@ -29,7 +28,6 @@ const delayedColorChange = (color, delay) => {
 //     .then(() => delayedColorChange('violet', 1000))
 
 //await keyword
-
 const rainbow=async()=>{
     await delayedColorChange('red',1000);
     await delayedColorChange('orange',1000);

@@ -24,7 +24,6 @@ const delayedColorChange = (newColor, delay, doNext) => {
         doNext && doNext();
     }, delay)
 }
-
 // STILL A LOT OF NESTING!!!
 delayedColorChange('red', 1000, () => {
     delayedColorChange('orange', 1000, () => {
@@ -37,8 +36,6 @@ delayedColorChange('red', 1000, () => {
         })
     })
 });
-
-
 // searchMoviesAPI('amadeus', () => {
 //     saveToMyDB(movies, () => {
 //         //if it works, run this:

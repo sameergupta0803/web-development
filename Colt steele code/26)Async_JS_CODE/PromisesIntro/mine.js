@@ -135,3 +135,4 @@ fakeRequestPromise('books.com/page1')
         console.log("Failure");
         console.log(err)
     })
+    //We can catch the error for all the request in the end without any nesting
