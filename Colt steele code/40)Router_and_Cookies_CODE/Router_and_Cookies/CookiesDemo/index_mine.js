@@ -1,5 +1,5 @@
 const express = require('express')
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser')//we use cookie-parser to retrieve the data from cookies
 const app = express()
 app.use(cookieParser('thisismysecret'))//'thisismysecret' is used to sign the cookie
 app.get('/greet', (req, res) => {

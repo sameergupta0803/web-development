@@ -39,6 +39,7 @@ const addProduct = async () => {
 }
 Farm.findOne({ name: 'Gupta farms' }).populate('products').then(res => console.log(res))
 //we use populate('products') to display the full details of the products inside the farm.
+
 // addProduct();
 // makeFarm()
 // Product.insertMany([

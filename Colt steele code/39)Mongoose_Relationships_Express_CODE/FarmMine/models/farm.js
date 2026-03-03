@@ -27,12 +27,14 @@ const farmSchema = new Schema({
 //         console.log(res)
 //     }
 // })
+
 farmSchema.post('findOneAndDelete', async function (farm) {
     if (farm.products.length) {
         const res = await Product.deleteMany({ _id: { $in: farm.products } })
         console.log(res);
     }
 })
+//mongoose middleware used to delete all the products accociated with a farm in the products model after we delete a farm.Here 'farm' refers to the document being deleted. post middleware runs after the operation has been performed and pre middleware runs before the operation.We need to add these middlewares to the schema.
 const Farm = mongoose.model('Farm', farmSchema)
 
 

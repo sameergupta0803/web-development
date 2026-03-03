@@ -32,6 +32,7 @@ app.get('/farms/new', (req, res) => {
 })
 app.get('/farms/:id', async (req, res) => {
     const farm = await Farm.findById(req.params.id).populate('products')
+    //we need to populate products in the farm so that we are able to access them in the 'farm' object and display them on the page
     res.render('farms/show', { farm })
 })
 app.post('/farms', async (req, res) => {
@@ -57,7 +58,7 @@ app.post('/farms/:id/products', async (req, res) => {
 
 app.delete('/farms/:id', async (req, res) => {
     const { id } = req.params
-    const output = await Farm.findByIdAndDelete(id);
+    const output = await Farm.findByIdAndDelete(id);//findByIdAndDelete triggers the findOneAndDelete() middleware in mongoose
     // console.log(output)
     res.redirect('/farms');
 })
