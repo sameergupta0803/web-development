@@ -7,13 +7,6 @@ import ProfileViewerWithSearch from "./ProfileViewerWithSearch";
 function App() {
   return (
     <>
-      <h1>Counter</h1>
-      <Counter />
-      <hr />
-      <QuoteFetcher />
-      <hr />
-      <QuoteFetcherLoader />
-      <hr />
       <ProfileViewerWithSearch />
     </>
   );
